@@ -1,0 +1,131 @@
+{% extends 'instagram/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container" style="margin-top:7%;">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="modal fade" id="imageUpload" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Image Upload</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="post" enctype="multipart/form-data" novalidate>
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+                                    <button class="btn btn-sm btn-success">Upload</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for image in images %}
+            <div class="card mb-4">
+                <div class="card-title">
+                    <img src="{{image.user.profile_picture.url}}" class="rounded-circle border ml-3 mt-2  mr-3" alt="{{image.user.user.username}}" width="35" height="35">
+                    <a href="{% url 'user_profile' image.user.user.username  %}" class="mt-4 user">{{image.user.user.username|title|lower}}</a>
+                </div>
+                <div class="card-body mb-4">
+                    <a href="{% url 'comment' image.id %}"><div class="card-text"
+                         style="background-image:url('{{ image.image.url }}');background-size: contain;position: sticky">
+                        <img src="{{image.image.url}}" class="card-img" width="100%"/>
+                    </div></a>
+                </div>
+                <div class="iconic ml-2">
+                    <button class="btn btn-sm" type="submit" name="image_id" value="{{image.id}}">
+                        <a href="{% url 'comment' image.id %}"><svg aria-label="Like" class="_ab6-" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><path d="M16.792 3.904A4.989 4.989 0 0121.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 014.708-5.218 4.21 4.21 0 013.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 013.679-1.938m0-2a6.04 6.04 0 00-4.797 2.127 6.052 6.052 0 00-4.787-2.127A6.985 6.985 0 00.5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 003.518 3.018 2 2 0 002.174 0 45.263 45.263 0 003.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 00-6.708-7.218z"></path></svg></a>
+                    </button>
+                    <button class="btn btn-sm" type="submit"><a href="{% url 'comment' image.id %}"><svg aria-label="Comment" class="_ab6-" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><path d="M20.656 17.008a9.993 9.993 0 10-3.59 3.615L22 22z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    </a></button>
+                    <svg aria-label="Share Post" class="_ab6-" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><line fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" x1="22" x2="9.218" y1="3" y2="10.083"></line><polygon fill="none" points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></polygon></svg>
+                </div>
+                <span class="ml-4 mb-1"><strong>{{image.likes.count}} like{{image.likes.count|pluralize}}</strong></span>
+                <span>
+                    <caption></caption>
+                </span>
+                <span class="text-secondary ml-4 viewall"><a href="{% url 'comment' image.id %}">view all {{image.comments.count}} comment{{image.comments.count|pluralize}}</a></span>
+                <div class="allcomments mb-4">
+                    {% for comment in image.comments.all|slice:'2' %}
+                    <div class="comment">
+                        <div class="ml-4"><strong>{{ comment.user.user.username }}</strong> <span
+                                class="text-secondary">{{ comment.comment }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    {% endfor %}
+                    <p class="text-secondary ml-4">{{image.created|timesince}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 mt-4 userinfo">
+            <div class="row">
+                <div class="col-md-3 ml-2">
+                    <img class="rounded-circle user-img" src="{{ user.profile.profile_picture.url }}">
+                </div>
+                <div class="col-md-6 mt-4 user-detail">
+                    <span class=" text-secondary"><a
+                            href="{% url 'user_profile' user.username %}">{{ user.username }}</a></span> <br>
+                    <span class=" inname">{{ user.profile.name }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="card mt-4 mr-2 ml-2">
+                        <div class="card-title text-secondary mt-2 mr-2 ml-2 ">Suggestions</div>
+                        {% for user in users %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-2 mr-3 mt-1 mb-2">
+                                    <img class="rounded-circle" src="{{ user.profile.profile_picture.url }}"
+                                         width="45px" height="45px">
+                                </div>
+                                <div class="col-md-6 mr-2 mt-2">
+                                    <span><a href="{% url 'user_profile' user.username  %}">{{user.username}}</a></span>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="modal fade bd-example-modal-sm" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <a class="D-block mx-auto" href="{% url 'profile' user.username %}">Profile</a>
+                    <hr>
+                    <a class="D-block mx-auto" href="{% url 'logout' %}">Log Out</a>
+                    <hr>
+                    <a class="D-block mx-auto" href="" data-dismiss="modal">Close</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
