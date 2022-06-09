@@ -1,0 +1,6 @@
+instagram-virtual/
+*pyc
+.env
+.idea
+__pycache__
+.vscode
