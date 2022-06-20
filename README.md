@@ -10,9 +10,40 @@
 ### :computer: Setup
 To get a local copy up and running follow these simple example steps.
 
-- open your terminal, and run 'git clone https://instagram-cloned-ip.herokuapp.com/' to clone the repository to your computer  
-- cd into the project folder
-- run `python3.8 run.py` in the terminal. The application will show on the command line.
+##### Cloning the repository:  
+ ```bash 
+git clone https://github.com/blancc-page/week8-instagram-clone-app.git
+```
+##### Navigate into the folder and install requirements  
+ ```bash 
+cd week8-instagram-clone-app 
+```
+##### Install and activate Virtual  
+ ```bash 
+python3 -m venv virtual - source virtual/bin/activate  
+```  
+##### Install Dependencies  
+ ```bash 
+pip install -r requirements.txt 
+```  
+ ##### Setup Database  
+  SetUp your database User,Password, Host then make migrate  
+ ```bash 
+python manage.py makemigrations instagram
+ ``` 
+ Now Migrate  
+ ```bash 
+python manage.py migrate 
+```
+##### Run the application  
+ ```bash 
+python manage.py runserver 
+``` 
+##### Testing the application  
+ ```bash 
+python manage.py test 
+```
+Open the application on your browser `127.0.0.1:8000`.  
 
 
 ## :trollface: Authors
