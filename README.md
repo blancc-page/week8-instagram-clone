@@ -50,9 +50,9 @@ Open the application on your browser `127.0.0.1:8000`.
 > A user should be able to:
 
 - Sign in to the application to start using.
-- Upload my pictures to the application.
-- See my profile with all my pictures.
-- Follow other users and see their pictures on my timeline.
+- Upload pictures to the application.
+- See profile with all my pictures.
+- Follow other users and see their pictures on the timeline.
 - Like a picture and leave a comment on it.
 
 
